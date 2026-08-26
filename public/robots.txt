@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Prevent indexing of placeholder or dynamic detail routes lacking real data
+Disallow: /project/
+
+Sitemap: https://rosid.com.np/sitemap.xml

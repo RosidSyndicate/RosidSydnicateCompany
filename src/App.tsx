@@ -39,6 +39,7 @@ import AdminCategories from './pages/admin/Categories'
 
 function AppContent() {
   const location = useLocation()
+  const isAdmin = location.pathname.startsWith('/admin')
 
   useEffect(() => {
     initAnalytics()
@@ -62,8 +63,8 @@ function AppContent() {
           },
         }}
       />
-      <Navbar />
-      <main>
+      {!isAdmin && <Navbar />}
+      <main className={!isAdmin ? "" : "min-h-screen"}>
         <Routes>
           {/* Admin Routes */}
           <Route path="/admin/login" element={<AdminLogin />} />
@@ -104,8 +105,8 @@ function AppContent() {
           <Route path="/service/:slug" element={<ServiceDetail />} />
         </Routes>
       </main>
-      <Footer />
-      <BackToTop />
+      {!isAdmin && <Footer />}
+      {!isAdmin && <BackToTop />}
     </div>
   )
 }

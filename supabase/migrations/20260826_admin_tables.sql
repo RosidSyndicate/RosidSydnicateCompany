@@ -149,11 +149,16 @@ VALUES
 ON CONFLICT (slug) DO UPDATE
 SET name = EXCLUDED.name, description = EXCLUDED.description;
 
--- Seed Corporate Site Content (Mission, Vision, Core Values)
-INSERT INTO public.site_content (section_key, content)
-VALUES
-('mission', 'To accelerate Nepal''s industrial transformation by integrating sovereign financial engineering, tier-one infrastructure construction, and resilient international supply chains under one trusted group structure.'),
-('vision', 'To be the preeminent corporate conglomerate and partner of choice for foreign EPC contractors, sovereign institutions, and multilateral investors driving South Asia''s sustainable development.'),
-('core_values', 'Institutional Integrity, Engineering Precision, Financial Reliability, and Sovereign Stewardship.')
-ON CONFLICT (section_key) DO UPDATE
-SET content = EXCLUDED.content;
+-- ============================================================================
+-- PERMISSIONS & PRIVILEGES (CRITICAL FOR POSTGREST / SUPABASE CLIENT)
+-- ============================================================================
+
+GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
+
+GRANT ALL ON ALL TABLES IN SCHEMA public TO anon, authenticated, service_role;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated, service_role;
+GRANT ALL ON ALL ROUTINES IN SCHEMA public TO anon, authenticated, service_role;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO anon, authenticated, service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO anon, authenticated, service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON ROUTINES TO anon, authenticated, service_role;

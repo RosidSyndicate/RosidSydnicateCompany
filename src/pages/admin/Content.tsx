@@ -3,19 +3,29 @@ import { supabase } from '../../lib/supabase'
 import toast from 'react-hot-toast'
 
 export default function Content() {
-  const [content, setContent] = useState<Record<string, string>>({})
+  const [content, setContent] = useState<Record<string, string>>({
+    mission: "To accelerate Nepal's industrial transformation by integrating sovereign financial engineering, tier-one infrastructure construction, and resilient international supply chains under one trusted group structure.",
+    vision: "To be the preeminent corporate conglomerate and partner of choice for foreign EPC contractors, sovereign institutions, and multilateral investors driving South Asia's sustainable development.",
+    core_values: "Institutional Integrity, Engineering Precision, Financial Reliability, and Sovereign Stewardship."
+  })
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
 
   const load = async () => {
-    const { data, error } = await supabase.from('site_content').select('*')
-    if (error) toast.error('Failed to load content')
-    if (data) {
-      const map: Record<string, string> = {}
-      data.forEach(d => map[d.section_key] = d.content)
-      setContent(map)
+    try {
+      const { data, error } = await supabase.from('site_content').select('*')
+      if (!error && data && data.length > 0) {
+        const map: Record<string, string> = {}
+        data.forEach(d => map[d.section_key] = d.content)
+        setContent(prev => ({ ...prev, ...map }))
+      } else if (error) {
+        console.warn('Site content fetch info:', error.message)
+      }
+    } catch (err) {
+      console.warn('Content fetch error:', err)
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   useEffect(() => {

@@ -20,10 +20,18 @@ export default function Inquiries() {
   const [loading, setLoading] = useState(true)
 
   const load = async () => {
-    const { data, error } = await supabase.from('inquiries').select('*').order('created_at', { ascending: false })
-    if (error) toast.error('Failed to load inquiries')
-    if (data) setInquiries(data)
-    setLoading(false)
+    try {
+      const { data, error } = await supabase.from('inquiries').select('*').order('created_at', { ascending: false })
+      if (!error && data) {
+        setInquiries(data)
+      } else if (error) {
+        console.warn('Inquiries Supabase fetch info:', error.message)
+      }
+    } catch (err) {
+      console.warn('Inquiries fetch error:', err)
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {

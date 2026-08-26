@@ -19,10 +19,18 @@ export default function Credentials() {
   const [newCred, setNewCred] = useState({ title: '', category: 'Company Registration', description: '', is_public: false })
 
   const load = async () => {
-    const { data, error } = await supabase.from('credentials').select('*').order('created_at', { ascending: false })
-    if (error) toast.error('Failed to load credentials')
-    if (data) setCredentials(data)
-    setLoading(false)
+    try {
+      const { data, error } = await supabase.from('credentials').select('*').order('created_at', { ascending: false })
+      if (!error && data) {
+        setCredentials(data)
+      } else if (error) {
+        console.warn('Credentials Supabase fetch info:', error.message)
+      }
+    } catch (err) {
+      console.warn('Credentials fetch error:', err)
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {

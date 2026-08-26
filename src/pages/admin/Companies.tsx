@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
+import { companies as INITIAL_COMPANIES } from '../../data/companies'
 import toast from 'react-hot-toast'
 
 type Company = {
@@ -11,17 +12,33 @@ type Company = {
 }
 
 export default function Companies() {
-  const [companies, setCompanies] = useState<Company[]>([])
+  const [companies, setCompanies] = useState<Company[]>(() => 
+    INITIAL_COMPANIES.map((c, i) => ({
+      id: `local-${i}`,
+      name: c.name,
+      slug: c.slug,
+      description: c.shortDescription || c.coreScope,
+      is_archived: false
+    }))
+  )
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState<Company | null>(null)
   const [isCreating, setIsCreating] = useState(false)
   const [newCompany, setNewCompany] = useState({ name: '', slug: '', description: '' })
 
   const load = async () => {
-    const { data, error } = await supabase.from('companies').select('*').order('created_at', { ascending: true })
-    if (error) toast.error('Failed to load companies')
-    if (data) setCompanies(data)
-    setLoading(false)
+    try {
+      const { data, error } = await supabase.from('companies').select('*').order('created_at', { ascending: true })
+      if (!error && data && data.length > 0) {
+        setCompanies(data)
+      } else if (error) {
+        console.warn('Companies Supabase fetch info:', error.message)
+      }
+    } catch (err: any) {
+      console.warn('Companies fetch error:', err)
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {

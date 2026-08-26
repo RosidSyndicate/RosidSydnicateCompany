@@ -263,29 +263,5 @@ All rights reserved. © 2026 Rosid Syndicates Group.
 | Deployment | ✅ Complete |
 | Handover | ✅ Ready |
 
----
 
-**Built with ❤️ for Rosid Syndicates Group**
-```
-
----
-
-## 📋 How to Use
-
-### Option 1: Create README.md in GitHub
-
-1. Go to your GitHub repository
-2. Click **"Add file"** → **"Create new file"**
-3. Name it `README.md`
-4. Copy and paste the entire content above
-5. Click **"Commit new file"**
-
-### Option 2: Create Locally
-
-1. Create a file named `README.md` in your project root
-2. Copy and paste the entire content
-3. Save the file
-
----
-
-**This README is complete and ready to use!** 🚀
+# Built with ❤️ for Rosid Syndicates Group

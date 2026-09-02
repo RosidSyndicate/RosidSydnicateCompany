@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { BrowserRouter, Routes, Route, useLocation, Outlet } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation, Outlet } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
@@ -67,6 +67,7 @@ function AppContent() {
       <main className={!isAdmin ? "" : "min-h-screen"}>
         <Routes>
           {/* Admin Routes */}
+          <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route element={<ProtectedRoute />}>
             <Route element={<AdminLayout><Outlet /></AdminLayout>}>
@@ -103,6 +104,9 @@ function AppContent() {
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/project/:slug" element={<ProjectDetail />} />
           <Route path="/service/:slug" element={<ServiceDetail />} />
+
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
       {!isAdmin && <Footer />}
